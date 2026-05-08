@@ -4,7 +4,7 @@
 A lexer, parser and loop unrolling optimizer for YU Assembly, a custom pseudo-assembly language designed for CSE 351 Term Project.
 
 ## Project Structure
-   YU-Assembly/ 
+    YU-Assembly/ 
     ├── ast.c
     ├── ast.h
     ├── grammar.bnf
