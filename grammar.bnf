@@ -1,0 +1,53 @@
+<program>           ::= <statement-list>
+    
+<statement-list>    ::= <statement>
+                    |   <statement-list> <statement>
+                    
+<statement>         ::= <labeled-statement>
+                    |   <instruction>
+                    
+<labeled-statement> ::= <label-def> <instruction>
+
+<label-def>         ::= <label-def> <instruction>
+
+<instruction>       ::= <mov-instr>
+                    | <load-instr>
+                    | <store-instr>
+                    | <addi-instr>
+                    | <add-instr>
+                    | <and-instr>
+                    | <or-instr>
+                    | <xor-instr>
+                    | <blt-instr>
+                    | <bgt-instr>
+                    | <beq-instr>
+
+<mov-insrt>         ::= "mov" <register> "," <immediate>
+<load-insrt>        ::= "load" <register> "," <mem-addr>
+<store-instr>       ::= "store" <register> "," <mem-addr>
+<addi-instr>        ::= "addi" <register> "," <register> "," <immediate>
+<add-instr>         ::= "add"  <register> "," <register> "," <register>
+<and-instr>         ::= "and"  <register> "," <register> "," <register>
+<or-instr>          ::= "or"   <register> "," <register> "," <register>
+<xor-instr>         ::= "xor"  <register> "," <register> "," <register>
+<blt-instr>         ::= "blt"  <register> "," <register> "," <LABEL>
+<bgt-instr>         ::= "bgt"  <register> "," <register> "," <LABEL>
+<beq-instr>         ::= "beq"  <register> "," <register> "," <LABEL>
+
+<mem-addr>          ::= "mem[" <register> "]"
+                    |   "mem[" <register> "+" <immediate> "]"
+                    |   "mem[" <register> "-" <immediate> "]"
+                    
+<register>          ::= "RO" | "R1" | "R2" | "R3"
+                    |   "R4" | "R5" | "R6" | "R7"
+                    
+<immediate>         ::= <NUMBER>
+                    |   "-" <NUMBER>
+                    
+<LABEL>             ::= <LETTER> { <LETTER> | <DIGIT> | "-" }
+                    
+<NUMBER>            ::= <DIGIT> { <DIGIT> }
+
+<LETTER>            ::= "A" | "B" | ... | "Z" | "a" | "b" | ... | "z"
+
+<DIGIT>             ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
