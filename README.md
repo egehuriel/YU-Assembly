@@ -1,9 +1,9 @@
 # YU Assembly Compiler
 
-##Project Overview
+## Project Overview
 A lexer, parser and loop unrolling optimizer for YU Assembly, a custom pseudo-assembly language designed for CSE 351 Term Project.
 
-##Project Structure
+## Project Structure
    YU-Assembly/ 
     ├── ast.c
     ├── ast.h
