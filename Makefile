@@ -11,10 +11,12 @@ all: $(TARGET)
 
 #bison
 $(BUILD)/parser.tab.c $(BUILD)/parser.tab.h: $(SRC)/parser.y
+		@echo "\n-------PARSER-------"
 	bison -d $(SRC)/parser.y -o $(BUILD)/parser.tab.c
 
 #flex
 $(BUILD)/lex.yy.c: $(SRC)/lexer.l $(BUILD)/parser.tab.h
+	@echo "\n-------LEX-------"
 	flex -o $(BUILD)/lex.yy.c $(SRC)/lexer.l
 
 $(TARGET): $(BUILD)/parser.tab.c $(BUILD)/lex.yy.c $(SRC)/ast.c $(SRC)/unroll.c $(SRC)/main.c
