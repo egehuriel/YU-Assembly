@@ -2,7 +2,9 @@
 
 ## Project Overview
 A lexer, parser and loop unrolling optimizer for YU Assembly, a custom pseudo-assembly language designed for CSE 351 Term Project. This project implements a complete compiler front-end for the language, consisting of a lexical analyzer built with Flex, a syntax analyzer built with Bison, and a loop unrolling optimizer.
+
 The lexer tokenizes raw assembly source code, recognizing instructions, registers (R0–R7), memory addressing forms, labels, and immediates while rejecting invalid input such as out-of-range registers or unknown characters. The parser enforces the grammar rules of YU Assembly, builds an Abstract Syntax Tree from the token stream, and catches syntax errors such as missing commas, wrong operand types, or labels used where registers are expected.
+
 Once the AST is built, the loop unroller walks it to detect loops via backward branch detection — a loop is identified when a branch instruction targets a label defined earlier in the program. Detected loops are then unrolled by a factor of 2: the loop body is duplicated, memory offsets in the duplicate are incremented by 1, and increment instructions are doubled, reducing the total number of branch and counter-update operations at runtime.
 
 ## Project Structure
@@ -37,9 +39,11 @@ Once the AST is built, the loop unroller walks it to detect loops via backward b
 
 ## Run Project
 Build the Project:
+
     make all
     
 Run the Project:
+
     make run FILE=valid1.asm
     make run FILE=valid2.asm
     make run FILE=valid3.asm
@@ -48,6 +52,7 @@ Run the Project:
     make run FILE=invalid3.asm
     
 CLEAN:
+
     make clean
     make clear
     
