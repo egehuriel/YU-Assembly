@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "ast.h"
 #include "unroll.h"
+#include "symtable.h"
 
 extern FILE *yyin;
 extern int yyparse(void);
@@ -35,6 +36,14 @@ int main(int argc, char *argv[]){
         fclose(input);
         return EXIT_FAILURE;
     }
+    //symbol table chec
+    printf("-----Symbol Table Check-----\n");
+    if(check_labels(root) != 0){
+        fprintf(stderr, "Semantic Error: undefined label found\n");
+        fclose(input);
+        return EXIT_FAILURE;
+    }
+    printf("\nAll branch targets resolved!\n");
     //6
     printf("=== AST (before unrolling) ===\n");
     print_ast(root, 0);

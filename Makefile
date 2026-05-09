@@ -19,8 +19,8 @@ $(BUILD)/lex.yy.c: $(SRC)/lexer.l $(BUILD)/parser.tab.h
 	@echo "\n-------LEX-------"
 	flex -o $(BUILD)/lex.yy.c $(SRC)/lexer.l
 
-$(TARGET): $(BUILD)/parser.tab.c $(BUILD)/lex.yy.c $(SRC)/ast.c $(SRC)/unroll.c $(SRC)/main.c
-	$(CC) $(CFLAGS) -I$(SRC) -I$(BUILD) -o $(TARGET) $(BUILD)/parser.tab.c $(BUILD)/lex.yy.c $(SRC)/ast.c $(SRC)/unroll.c $(SRC)/main.c
+$(TARGET): $(BUILD)/parser.tab.c $(BUILD)/lex.yy.c $(SRC)/ast.c $(SRC)/unroll.c $(SRC)/symtable.c $(SRC)/main.c
+	$(CC) $(CFLAGS) -I$(SRC) -I$(BUILD) -o $(TARGET) $(BUILD)/parser.tab.c $(BUILD)/lex.yy.c $(SRC)/ast.c $(SRC)/unroll.c $(SRC)/symtable.c $(SRC)/main.c
 
 clean:
 	@echo "\n-------Cleaning-------\n"
