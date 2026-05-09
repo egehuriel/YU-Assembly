@@ -133,7 +133,7 @@ static ASTNode *double_addi(ASTNode *stmt){
 static ASTNode *build_ast(ASTNode **stmts, int count){
     if(count == 0) return NULL;
     ASTNode *root = stmts[0];
-    for (int i =1; i < count; i++){
+    for (int i = 1; i < count; i++){
         root = make_program_node(root, stmts[i]);
     }
     return root;
@@ -144,7 +144,7 @@ ASTNode *unroll_loops(ASTNode *root){
     int count = flatten(root, stmts, 0);
     LabelEntry labels[MAX_LABELS];
     int nlabels = 0;
-    
+
     for(int i = 0; i < count; i++){
         const char *lname = get_label_name(stmts[i]);
         if(lname && nlabels < MAX_LABELS){
@@ -153,6 +153,7 @@ ASTNode *unroll_loops(ASTNode *root){
             nlabels++;
         }
     }
+
     for(int i = 0; i < count; i++){
         ASTNode *instr = get_instr(stmts[i]);
         if(!is_branch(instr)) continue;
@@ -165,51 +166,59 @@ ASTNode *unroll_loops(ASTNode *root){
             }
         }
         if(loop_start < 0 || loop_start >= i) continue;
+
         ASTNode *result[MAX_STMTS];
         int rcount = 0;
-        for(int k = 0; k < loop_start; k++){
+        
+        for(int k = 0; k < loop_start; k++)
             result[rcount++] = stmts[k];
-        }
+
         result[rcount++] = stmts[loop_start];
         for(int k = loop_start + 1; k < i; k++){
+            ASTNode *instr_k = get_instr(stmts[k]);
+            if(instr_k && instr_k->type == NODE_ADDI) continue;
             result[rcount++] = stmts[k];
         }
-        for(int k = loop_start +1 ; k < i; k++){
+
+        result[rcount++] = copy_stmt_with_offset(stmts[loop_start], 1);
+        for(int k = loop_start + 1; k < i; k++){
             ASTNode *instr_k = get_instr(stmts[k]);
-            if(instr_k && instr_k->type == NODE_ADDI){
-                continue;
-            }
-            result[rcount++] = copy_stmt_with_offset(stmts[k],1);
+            if(instr_k && instr_k->type == NODE_ADDI) continue;
+            result[rcount++] = copy_stmt_with_offset(stmts[k], 1);
         }
+ 
         for(int k = loop_start + 1; k < i; k++){
             ASTNode *instr_k = get_instr(stmts[k]);
             if(instr_k && instr_k->type == NODE_ADDI)
                 result[rcount++] = double_addi(stmts[k]);
         }
+
         result[rcount++] = stmts[i];
-        for(int k = i + 1; k < count; k++){
+
+        for(int k = i + 1; k < count; k++)
             result[rcount++] = stmts[k];
-        }
-        for(int k = 0; k < count; k++){
+
+        for(int k = 0; k < rcount; k++)
             stmts[k] = result[k];
-        }
         count = rcount;
-        for(int j = 0; j < nlabels; j++){
+
+        for(int j = 0; j < nlabels; j++)
             free(labels[j].name);
-        }
+
         return build_ast(stmts, count);
     }
-    for(int j = 0; j < nlabels; j++){
+
+    for(int j = 0; j < nlabels; j++)
         free(labels[j].name);
-    }
+
     return root;
 }
 
 static void print_mem(ASTNode *mem){
     if(!mem) return;
-    if (mem->data.mem.sign == 0)
+    if(mem->data.mem.sign == 0)
         printf("mem[R%d]", mem->data.mem.reg);
-    else if( mem->data.mem.sign == 1)
+    else if(mem->data.mem.sign == 1)
         printf("mem[R%d+%d]", mem->data.mem.reg, mem->data.mem.offset);
     else
         printf("mem[R%d-%d]", mem->data.mem.reg, mem->data.mem.offset);
@@ -217,7 +226,7 @@ static void print_mem(ASTNode *mem){
 
 static void print_instr(ASTNode *node){
     if(!node) return;
-    switch (node->type){
+    switch(node->type){
         case NODE_MOV:
             printf("mov R%d, %d\n", node->data.mov.rd, node->data.mov.imm);
             break;
